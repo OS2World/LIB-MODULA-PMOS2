@@ -1,0 +1,13 @@
+- GENDEBUG +
+- LINENO +
+- GENHISTORY +
+-multithread+
+
+-INCL_DOS:+
+-INCL_KBD:+
+-INCL_VIO:+
+-INCL_MOU:+
+-INCL_DOSERRORS:+
+
+!module TestMous
+

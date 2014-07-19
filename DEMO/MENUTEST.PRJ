@@ -1,0 +1,16 @@
+-HEAPLIMIT = 8000000
+-COMPILERHEAP = 12000000
+-multithread+
+
+-INCL_DOS:+
+-INCL_KBD:+
+-INCL_VIO:+
+-INCL_MOU:+
+-INCL_DOSERRORS:+
+
+- GENDEBUG +
+- LINENO +
+- GENHISTORY +
+
+!module menutest
+

@@ -1,0 +1,14 @@
+- GENDEBUG +
+- LINENO +
+- GENHISTORY +
+-multithread+
+
++m2extensions
+
+:INCL_DOS+
+:INCL_KBD+
+:INCL_VIO+
+:INCL_DOSERRORS+
+
+!module KeyTest
+

@@ -1,0 +1,12 @@
+
+- GENDEBUG +
+- LINENO +
+- GENHISTORY +
+
+-INCL_DOSERRORS:+
+:INCL_DOS+
+:INCL_KBD+
+-INCL_VIO:+
+
+!module SortTest
+

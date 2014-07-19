@@ -1,0 +1,71 @@
+DEFINITION MODULE RelayMail;
+
+        (********************************************************)
+        (*                                                      *)
+        (* Part of the SMTP server - relays mail to other hosts *)
+        (*                                                      *)
+        (*  Programmer:         P. Moylan                       *)
+        (*  Started:            12 May 1998                     *)
+        (*  Last edited:        2 December 1999                 *)
+        (*  Status:             OK                              *)
+        (*                                                      *)
+        (********************************************************)
+
+FROM Names IMPORT
+    (* type *)  UserName, HostName, PathString;
+
+FROM IOChan IMPORT
+    (* type *)  ChanId;
+
+FROM RndFile IMPORT
+    (* type *)  FilePos;
+
+FROM TransLog IMPORT
+    (* type *)  TransactionLogID;
+
+
+TYPE RelayList;        (* is private *)
+
+PROCEDURE UserAndDomain (source: ARRAY OF CHAR;
+                            VAR (*OUT*) user: UserName;
+                            VAR (*OUT*) domain: HostName);
+
+    (* Extracts user and domain from a path string. *)
+
+PROCEDURE Empty (RL: RelayList): BOOLEAN;
+
+    (* Tests whether the list has any entries. *)
+
+PROCEDURE SingleRecipient (RL: RelayList;
+                       VAR (*OUT*) recipientname: ARRAY OF CHAR): BOOLEAN;
+
+    (* Returns TRUE iff there is exactly one recipient.  If so, the     *)
+    (* recipient's e-mail address is returned in recipientname.         *)
+    (* Otherwise there are no guarantees about the content of           *)
+    (* recipientname.                                                   *)
+
+PROCEDURE AddToRelayList (VAR (*INOUT*) RL: RelayList;
+                             VAR (*IN*) to: ARRAY OF CHAR);
+
+    (* Adds a new entry to a list of recipients. *)
+
+PROCEDURE WriteRelayList (cid: ChanId;  RL: RelayList;
+                                               NewLines: BOOLEAN);
+
+    (* Writes a list of e-mail addresses to a file.  If NewLines is     *)
+    (* TRUE then each address goes on a new line; otherwise, the        *)
+    (* addresses are space-separated.                                   *)
+
+PROCEDURE SendRelayMail (VAR (*IN*) filename, from: ARRAY OF CHAR;
+                         VAR (*INOUT*) RL: RelayList;
+                         offset: FilePos;  ID: TransactionLogID);
+
+    (* Takes a copy of the file, and queues it to be sent to the        *)
+    (* recipients on RL; then deletes RL.                               *)
+
+PROCEDURE DeleteRelayList (VAR (*INOUT*) RL: RelayList);
+
+    (* Discards a list of relay mail recipients, and sets RL to NIL. *)
+
+END RelayMail.
+

@@ -1,0 +1,67 @@
+DEFINITION MODULE Semaphores;
+
+        (********************************************************)
+        (*                                                      *)
+        (*      Defines the semaphore data type, and the two    *)
+        (*      basic operations on a semaphore.                *)
+        (*                                                      *)
+        (*      Programmer:     P. Moylan                       *)
+        (*      Last edited:    10 February 1998                *)
+        (*      Status:         OK                              *)
+        (*                                                      *)
+        (********************************************************)
+
+FROM TaskControl IMPORT TaskID;
+
+TYPE Semaphore;         (* is private *)
+
+(*
+PROCEDURE DumpSemaphoreState (s: Semaphore);
+
+    (* Writes information about s to the dump file. *)
+*)
+
+PROCEDURE CreateSemaphore (VAR (*OUT*) s: Semaphore; InitialValue: CARDINAL);
+
+    (* Creates semaphore s, with the given initial value and an empty   *)
+    (* queue.                                                           *)
+
+PROCEDURE DestroySemaphore (VAR (*INOUT*) s: Semaphore);
+
+    (* Reclaims any space used by semaphore s.  Remark:  It is not at   *)
+    (* all obvious what should be done with any tasks which happen to   *)
+    (* be blocked on this semaphore (should they be unblocked, or       *)
+    (* killed?).  At present we take the easy way out and assume that   *)
+    (* there are no pending operations on s at the time that it is      *)
+    (* destroyed.                                                       *)
+
+PROCEDURE Wait (s: Semaphore);
+
+    (* Decrements the semaphore value.  If the value goes negative,     *)
+    (* the calling task is blocked and there is a task switch.          *)
+
+PROCEDURE TimedWaitT (s: Semaphore;
+                        TimeLimit: INTEGER;  VAR (*OUT*) TimedOut: BOOLEAN);
+
+    (* Like procedure Wait, except that it returns with TimedOut TRUE   *)
+    (* if the corresponding Signal does not occur within TimeLimit      *)
+    (* clock ticks.  Note that this procedure is not recommended for    *)
+    (* general use, because "clock ticks" is not a convenient unit of   *)
+    (* time for most callers.  For a more useful version, see procedure *)
+    (* TimedWait in module Timer.                                       *)
+
+PROCEDURE Signal (s: Semaphore);
+
+    (* Increments the semaphore value.  Unblocks one waiting task,      *)
+    (* if there was one.                                                *)
+
+PROCEDURE SemaphoreHolder (s: Semaphore): TaskID;
+
+    (* Returns the Task ID of the current holder of s.  The result is   *)
+    (* 0 if there is no current holder.  For the purposes of this       *)
+    (* procedure, the holder of s is defined to be the last task to     *)
+    (* have passed a wait on s.  The Signal(s) operation sets the       *)
+    (* state back to "no current holder".                               *)
+
+END Semaphores.
+

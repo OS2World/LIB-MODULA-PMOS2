@@ -1,0 +1,15 @@
+- GENDEBUG +
+- LINENO +
+- GENHISTORY +
+-multithread+
+
+-INCL_VIO:+
+-INCL_KBD:+
+-INCL_DOS:+
+-INCL_DOSERRORS:+
+-INCL_MOU:+
+-INCL_DOSDEVIOCTL:+
+-INCL_WININPUT:+
+
+!module testcalc
+

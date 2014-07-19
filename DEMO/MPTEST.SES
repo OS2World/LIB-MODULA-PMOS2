@@ -1,0 +1,98 @@
+[ Options ]
+  Traced_Run_Delay = 25
+  HilighCode = Yes
+  FullDisasm = Yes
+  DumpDisplay = No
+  Save_Opt_File = Yes
+  StopOnFirstChance = Yes
+[ Colors ]
+  Pulldown
+   Background = White on Blue
+   Button = LightGray on Blue
+   CurrentButton = White on Black
+   Lite = White on Blue
+   CurrentLite = Yellow on Black
+  Menues
+   Background = White on Blue
+   Frame = DarkGray on Blue
+   Button = LightGray on Blue
+   CurrentButton = White on Black
+   Lite = White on Blue
+   CurrentLite = Yellow on Black
+   Inactive = DarkGray on Blue
+   CurrInactive = DarkGray on Black
+  Source_Window
+   Background = White on LightGray
+   Header = Black on LightGray
+   ActiveHeader = Yellow on Brown
+   Code = White on LightGray
+   NoCode = DarkGray on LightGray
+   Disassembler = Black on LightGray
+   Break = Yellow on LightGray
+   BreakDisabled = DarkGray on LightGray
+   UserCursor = White on Blue
+   ExecCursor = White on Red
+  List_Defaults
+   Background = Black on LightGray
+   Frame = Black on LightGray
+   Header = Black on LightGray
+   ActiveHeader = White on Black
+   Line = Black on LightGray
+   CurrentLine = White on Black
+  Error_Window
+   Background = White on Red
+   Frame = White on Red
+   Header = White on Red
+   Message = White on Red
+   Button = Black on LightGray
+  Message_Window
+   Background = White on Blue
+   Frame = White on Blue
+   Header = White on Blue
+   Message = White on Blue
+   Button = Black on LightGray
+  Register_Window
+   Background = Black on LightGray
+   Frame = Black on LightGray
+   Header = Black on LightGray
+   ActiveHeader = White on Black
+   Normal = Black on LightGray
+   Current = White on Black
+   Written = Red on LightGray
+   Readed = Black on Green
+   Both = Red on Green
+  Dump_Window
+   Background = Black on LightGray
+   Frame = Black on LightGray
+   Header = Black on LightGray
+   ActiveHeader = White on Black
+   Address = Black on LightGray
+   Mem = Black on LightGray
+   CurMem = White on Black
+  Stack_Window
+   Background = Black on LightGray
+   Frame = Black on LightGray
+   Header = Black on LightGray
+   ActiveHeader = White on Black
+   Address = Black on LightGray
+   Mem = Black on LightGray
+   CurMem = White on Black
+  Windows_List
+   Background = Black on Blue
+   Frame = DarkGray on Blue
+   Header = Black on LightGray
+   ActiveHeader = White on Black
+   Line = LightGray on Blue
+   CurrentLine = White on Black
+[ Windows layout ]
+   [ Source_Window ]
+     size=( 0, 1, 79, 24) V
+   [ Registers_Window ]
+     size=( 50, 16, 79, 24) V
+   [ Modules_Window ]
+     size=( 67, 14, 79, 24) V
+   [ Variables_Window ]
+     size=( 50, 1, 79, 15) V
+   [ Local_Variables ]
+     size=( 50, 1, 79, 15) V
+.

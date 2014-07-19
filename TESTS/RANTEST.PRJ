@@ -1,0 +1,6 @@
+-lookup = *.def = .\def
+-lookup = *.sym = .\sym
+-lookup = *.obj = .\obj
+
+!module RanTest
+

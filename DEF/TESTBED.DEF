@@ -1,0 +1,16 @@
+DEFINITION MODULE Testbed;
+
+(************************************************************************)
+(*                                                                      *)
+(*          Miscellaneous procedures for use in testing new code        *)
+(*                                                                      *)
+(*      Author:         P. Moylan                                       *)
+(*      Last edited:    6 August 1996                                   *)
+(*      Status:         OK                                              *)
+(*                                                                      *)
+(************************************************************************)
+
+PROCEDURE Checkpoint (message: ARRAY OF CHAR);
+
+END Testbed.
+

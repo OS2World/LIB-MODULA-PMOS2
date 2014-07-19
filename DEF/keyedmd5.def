@@ -1,0 +1,34 @@
+(* Obsolete, but should be retained until I have full confidence *)
+(* in the replacement module called HMAC.                        *)
+
+DEFINITION MODULE KeyedMD5;
+
+        (********************************************************)
+        (*                                                      *)
+        (*                KEYED MD5 ENCRYPTION                  *)
+        (*                                                      *)
+        (*  Implementation of HMAC_MD5 keyed hashing algorithm  *)
+        (*              as defined in RFC 2104                  *)
+        (*                                                      *)
+        (*  Programmer:         P. Moylan                       *)
+        (*  Started:            3 February 2003                 *)
+        (*  Last edited:        18 February 2005                *)
+        (*  Status:             OK                              *)
+        (*                                                      *)
+        (********************************************************)
+
+
+FROM SYSTEM IMPORT (*type*) LOC;
+FROM MD5    IMPORT (*type*) MD5_DigestType;
+(*
+PROCEDURE HMAC_MD5 (Text: ARRAY OF LOC;  TextLength: CARDINAL;
+                    Key: ARRAY OF LOC;  KeyLength: CARDINAL;
+                    VAR (*OUT*) digest: MD5_DigestType);
+
+    (* Inputs are Text and Key, and we have to give their lengths       *)
+    (* explicitly because they might contain zero bytes, i.e. it is not *)
+    (* good enough to treat them as character arrays.  The encrypted    *)
+    (* result is in digest.                                             *)
+*)
+END KeyedMD5.
+

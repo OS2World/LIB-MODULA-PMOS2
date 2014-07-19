@@ -1,0 +1,5 @@
+(* Test file for PP preprocessor *)
+
+(*<XDS*) Is this valid? (*>*)
+(*<TopSpeed What about this? >*)
+

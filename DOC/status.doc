@@ -1,0 +1,62 @@
+STATUS OF THE PROJECTS IN THE "PMOS/2 tests" workplace
+======================================================
+
+NOTE: ALL of the graphics programs fail since XDS 2.30 was installed.
+Cause not yet known, but the failure is occurring in module "Graph".
+
+------------------------------------------------------------
+
+EditTest:  Working.
+
+GrafTst1:  Working, except that I haven't yet figured out how to change the
+           size of the display area on a "mode change".
+           No longer working, since XDS 2.30 installed.  Cause not yet known.
+
+KeyTest:   Working.
+
+MBoxTest:  Working.
+
+Rantest:   Working.
+
+Sematest:  Working.
+
+SortFile:  Working.
+
+SortTest:  Working.
+
+SoundTst:  Working.
+
+TaskTest:  Working.
+
+TestMous:  Working.
+
+UITest:    Working.
+
+WTest:     Working.
+
+
+STATUS OF THE PROJECTS IN THE "PMOS/2 Demo" workplace
+======================================================
+
+BarDemo:   Working except for the sideways text.
+
+BeeSwarm:  Working, but so slow that it loses its point.  The speed difference
+           between this and the DOS version is enormous.
+
+GrafDemo:  Working (I think - haven't checked in great detail)
+
+GrafTest:  Working except for an error beep on every call to SetMode.
+
+LineDemo:  Closing a window is terribly slow, and there's a minor screen
+           corruption that looks as if the clip area is out by one pixel.
+           Otherwise working.
+
+Menutest:  Working.
+
+MPtest:    Working.
+
+SpeakerT:  Working.
+
+Testcalc:  Working.
+
+
