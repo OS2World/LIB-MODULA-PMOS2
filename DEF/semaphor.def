@@ -6,7 +6,7 @@ DEFINITION MODULE Semaphores;
         (*      basic operations on a semaphore.                *)
         (*                                                      *)
         (*      Programmer:     P. Moylan                       *)
-        (*      Last edited:    14 February 2001                *)
+        (*      Last edited:    21 March 2014                   *)
         (*      Status:         OK                              *)
         (*                                                      *)
         (********************************************************)
@@ -32,8 +32,9 @@ PROCEDURE Wait (s: Semaphore);
     (* Decrements the semaphore value.  If the value goes negative,     *)
     (* the calling task is blocked and there is a task switch.          *)
 
-PROCEDURE TimedWaitT (s: Semaphore;
-                        TimeLimit: INTEGER;  VAR (*OUT*) TimedOut: BOOLEAN);
+PROCEDURE TimedWaitInternal (s: Semaphore;  TimeLimit: INTEGER;
+                               ConsumeSurplus: BOOLEAN;
+                                 VAR (*OUT*) TimedOut: BOOLEAN);
 
     (* Like procedure Wait, except that it returns with TimedOut TRUE   *)
     (* if the corresponding Signal does not occur within TimeLimit      *)
@@ -41,6 +42,8 @@ PROCEDURE TimedWaitT (s: Semaphore;
     (* general use, because "clock ticks" is not a convenient unit of   *)
     (* time for most callers.  For a more useful version, see procedure *)
     (* TimedWait in module Timer.                                       *)
+    (* If ConsumeSurplus is true, we cancel all the semaphore "credit"  *)
+    (* that has been built up by possibly multiple Signal operations.   *)
 
 PROCEDURE Signal (s: Semaphore);
 

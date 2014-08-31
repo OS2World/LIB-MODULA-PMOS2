@@ -1,3 +1,25 @@
+(**************************************************************************)
+(*                                                                        *)
+(*  PMOS/2 software library                                               *)
+(*  Copyright (C) 2014   Peter Moylan                                     *)
+(*                                                                        *)
+(*  This program is free software: you can redistribute it and/or modify  *)
+(*  it under the terms of the GNU General Public License as published by  *)
+(*  the Free Software Foundation, either version 3 of the License, or     *)
+(*  (at your option) any later version.                                   *)
+(*                                                                        *)
+(*  This program is distributed in the hope that it will be useful,       *)
+(*  but WITHOUT ANY WARRANTY; without even the implied warranty of        *)
+(*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *)
+(*  GNU General Public License for more details.                          *)
+(*                                                                        *)
+(*  You should have received a copy of the GNU General Public License     *)
+(*  along with this program.  If not, see <http://www.gnu.org/licenses/>. *)
+(*                                                                        *)
+(*  To contact author:   http://www.pmoylan.org   peter@pmoylan.org       *)
+(*                                                                        *)
+(**************************************************************************)
+
 IMPLEMENTATION MODULE WildCard;
 
         (********************************************************)
@@ -23,6 +45,10 @@ CONST NoStoppers = CharSet{};
 
 (************************************************************************)
 (*                         SUBSTRING MATCHING                           *)
+(*                                                                      *)
+(*  These two procedures will make more sense once you've read the      *)
+(*  specification of WildMatchS.                                        *)
+(*                                                                      *)
 (************************************************************************)
 
 PROCEDURE SubstringMatch (VAR (*IN*) input: ARRAY OF CHAR;
@@ -32,6 +58,10 @@ PROCEDURE SubstringMatch (VAR (*IN*) input: ARRAY OF CHAR;
                            CheckPercent, leftpercent: BOOLEAN;
                            Stoppers: CharSet): BOOLEAN;           FORWARD;
 
+    (* Executive overview: succeeds if a substring of input matches     *)
+    (* template.  (This glosses over some technicalities, but           *)
+    (* executives aren't interested in precision.)                      *)
+
 (************************************************************************)
 
 PROCEDURE HeadMatch (VAR (*IN*) input: ARRAY OF CHAR;
@@ -40,8 +70,11 @@ PROCEDURE HeadMatch (VAR (*IN*) input: ARRAY OF CHAR;
                           j2, k2: CARDINAL;  CheckPercent: BOOLEAN;
                                              Stoppers: CharSet): BOOLEAN;
 
+    (* Executive overview: succeeds if a LEADING substring of input     *)
+    (* matches template.                                                *)
+
     (* Returns TRUE if input[j1..k] matches template[j2..k2], where     *)
-    (* k1min <= k <= k1max, and if in addition the match would consume  *)
+    (* j1 <= k <= k1, and if in addition the match would consume        *)
     (* at least minsize characters of input.  If the template is empty  *)
     (* (j2 > k2), we have a match iff minsize = 0.  The Stoppers        *)
     (* parameter is used iff CheckPercent is TRUE and the template      *)
@@ -57,7 +90,8 @@ PROCEDURE HeadMatch (VAR (*IN*) input: ARRAY OF CHAR;
 
             IF j2 > k2 THEN
 
-                (* No more template left; match by definition.  *)
+                (* No more template left; match by definition iff       *)
+                (* minsize is zero.                                     *)
 
                 RETURN minsize = 0;
 

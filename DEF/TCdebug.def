@@ -1,0 +1,34 @@
+DEFINITION MODULE TCdebug;
+
+        (****************************************************************)
+        (*                                                              *)
+        (*           Debug utilities for low-level problems             *)
+        (*                                                              *)
+        (*      Programmer:     P. Moylan                               *)
+        (*      Last edited:    16 November 2012                        *)
+        (*      Status:         OK                                      *)
+        (*                                                              *)
+        (****************************************************************)
+
+
+IMPORT OS2;
+
+TYPE
+    SemOpKind = (sem_creat, sem_wait, sem_post, sem_reset, sem_close);
+    ThrOpKind = (thr_start, thr_awake, thr_exit);
+
+PROCEDURE StartDebugLogging (useScreen, useDisk: BOOLEAN);
+
+    (* Enables or disables output from this module. *)
+
+PROCEDURE NoteSemOperation (op: SemOpKind;  handle: OS2.HEV;
+                             thread: CARDINAL;  errnum: OS2.APIRET);
+
+    (* Logs the fact that this operation has been done. *)
+
+PROCEDURE NoteThreadOperation (op: ThrOpKind;  thread: CARDINAL;  name: ARRAY OF CHAR);
+
+    (* Logs the fact that this operation has been done. *)
+
+END TCdebug.
+

@@ -1,3 +1,25 @@
+(**************************************************************************)
+(*                                                                        *)
+(*  PMOS/2 software library                                               *)
+(*  Copyright (C) 2014   Peter Moylan                                     *)
+(*                                                                        *)
+(*  This program is free software: you can redistribute it and/or modify  *)
+(*  it under the terms of the GNU General Public License as published by  *)
+(*  the Free Software Foundation, either version 3 of the License, or     *)
+(*  (at your option) any later version.                                   *)
+(*                                                                        *)
+(*  This program is distributed in the hope that it will be useful,       *)
+(*  but WITHOUT ANY WARRANTY; without even the implied warranty of        *)
+(*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *)
+(*  GNU General Public License for more details.                          *)
+(*                                                                        *)
+(*  You should have received a copy of the GNU General Public License     *)
+(*  along with this program.  If not, see <http://www.gnu.org/licenses/>. *)
+(*                                                                        *)
+(*  To contact author:   http://www.pmoylan.org   peter@pmoylan.org       *)
+(*                                                                        *)
+(**************************************************************************)
+
 IMPLEMENTATION MODULE RandCard;
 
         (********************************************************)
@@ -5,10 +27,14 @@ IMPLEMENTATION MODULE RandCard;
         (*              Random number generator                 *)
         (*                                                      *)
         (*  Programmer:         P. Moylan                       *)
-        (*  Last edited:        25 June 1996                    *)
+        (*  Last edited:        24 March 2010                   *)
         (*  Status:             Working                         *)
         (*                                                      *)
         (********************************************************)
+
+FROM SysClock IMPORT
+    (* type *)  DateTime,
+    (* proc *)  GetClock;
 
 (************************************************************************)
 (*                                                                      *)
@@ -53,8 +79,27 @@ PROCEDURE RandInt (min, max: INTEGER): INTEGER;
     (* about the precise distribution.)                         *)
 
     BEGIN
-        RETURN VAL(INTEGER,RandCardinal()) MOD (max-min) + min + 1;
+        IF min >= max THEN
+            RETURN min;
+        ELSE
+            RETURN VAL(INTEGER,RandCardinal()) MOD (max-min+1) + min;
+        END (*IF*);
     END RandInt;
+
+(****************************************************************)
+
+PROCEDURE Randomize;
+
+    (* Changes the random number seed to a new value.           *)
+
+    VAR time: DateTime;
+
+    BEGIN
+        GetClock (time);
+        WITH time DO
+            seed := 60*(24*hour + minute) + second;
+        END (*WITH*);
+    END Randomize;
 
 (****************************************************************)
 (*                      MODULE INITIALISATION                   *)
@@ -63,4 +108,4 @@ PROCEDURE RandInt (min, max: INTEGER): INTEGER;
 BEGIN
     seed := 1;
 END RandCard.
-
+

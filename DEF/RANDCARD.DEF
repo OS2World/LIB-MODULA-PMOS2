@@ -5,7 +5,7 @@ DEFINITION MODULE RandCard;
         (*              Random number generator                 *)
         (*                                                      *)
         (*  Programmer:         P. Moylan                       *)
-        (*  Last edited:        25 June 1996                    *)
+        (*  Last edited:        24 March 2010                   *)
         (*  Status:             OK                              *)
         (*                                                      *)
         (********************************************************)
@@ -13,6 +13,10 @@ DEFINITION MODULE RandCard;
 CONST modulus = 2147483647;     (*  2^31 - 1  *)
 
 VAR seed: CARDINAL;     (*   visible in case you want to re-randomize   *)
+
+PROCEDURE Randomize;
+
+    (* Changes the random number seed to a new value.           *)
 
 PROCEDURE RandCardinal (): CARDINAL;
 

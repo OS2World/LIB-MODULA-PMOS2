@@ -1,8 +1,6 @@
 FAULTS IN THE CURRENT VERSION OF PMOS/2
 =======================================
 
-Kernel: present version is full of testing code, needs tidying up.
-
 Keyboard module: cannot handle ^C, ^P, or ^S - system seems to intercept these
    before we can read them.
 
@@ -10,9 +8,4 @@ Mouse: I haven't yet figured out how to stop the system from intercepting
    mouse clicks.
 
 Graphics support: now exists, but still at a crude level.
-
-PM sessions: not yet supported, this is on my "to do" list for the future, but
-   it will be some time before this is working properly.  (I have some test
-   software for the PM case, but it's nowhere near being ready for release.
-   I want to get the VIO version cleaned up first.)
 

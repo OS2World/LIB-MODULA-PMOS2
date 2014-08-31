@@ -6,7 +6,7 @@ DEFINITION MODULE LONGLONG;
         (*                                                      *)
         (*  Programmer:         P. Moylan                       *)
         (*  Started:            17 October 2001                 *)
-        (*  Last edited:        19 May 2005                     *)
+        (*  Last edited:        28 May 2011                     *)
         (*  Status:             OK                              *)
         (*                                                      *)
         (********************************************************)
@@ -49,6 +49,10 @@ PROCEDURE Diff64 (A, B: CARD64): INT64;
 PROCEDURE Mul64 (A, B: CARD64): CARD64;
 
     (* Returns A*B. *)
+
+PROCEDURE ShortMul64 (A: CARD64;  B: CARDINAL): CARD64;
+
+    (* Returns A*B, for the case where the second operand is a CARDINAL. *)
 
 PROCEDURE LongDiv64 (A: CARD64;  B: CARDINAL;  VAR (*OUT*) quotient: CARD64;
                                   VAR (*OUT*) remainder: CARDINAL);

@@ -1,3 +1,25 @@
+(**************************************************************************)
+(*                                                                        *)
+(*  PMOS/2 software library                                               *)
+(*  Copyright (C) 2014   Peter Moylan                                     *)
+(*                                                                        *)
+(*  This program is free software: you can redistribute it and/or modify  *)
+(*  it under the terms of the GNU General Public License as published by  *)
+(*  the Free Software Foundation, either version 3 of the License, or     *)
+(*  (at your option) any later version.                                   *)
+(*                                                                        *)
+(*  This program is distributed in the hope that it will be useful,       *)
+(*  but WITHOUT ANY WARRANTY; without even the implied warranty of        *)
+(*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *)
+(*  GNU General Public License for more details.                          *)
+(*                                                                        *)
+(*  You should have received a copy of the GNU General Public License     *)
+(*  along with this program.  If not, see <http://www.gnu.org/licenses/>. *)
+(*                                                                        *)
+(*  To contact author:   http://www.pmoylan.org   peter@pmoylan.org       *)
+(*                                                                        *)
+(**************************************************************************)
+
 IMPLEMENTATION MODULE Conversions;
 
         (********************************************************)
@@ -5,7 +27,7 @@ IMPLEMENTATION MODULE Conversions;
         (*              Miscellaneous type conversions          *)
         (*                                                      *)
         (*  Programmer:         P. Moylan                       *)
-        (*  Last edited:        12 February 2004                *)
+        (*  Last edited:        26 February 2012                *)
         (*  Status:             Working                         *)
         (*                                                      *)
         (*    EXCEPTION HANDLERS TEMPORARILY REMOVED            *)
@@ -170,7 +192,10 @@ PROCEDURE LongCardToString (number: CARD32;
     VAR j, remainder: CARDINAL;
 
     BEGIN
-        IF number < 10 THEN
+        IF fieldsize = 0 THEN
+            (* do nothing - can happen if caller allowed *)
+            (* too little space.                         *)
+        ELSIF number < 10 THEN
             IF fieldsize > 1 THEN
                 FOR j := 0 TO fieldsize-2 DO
                     buffer[j] := " ";
@@ -198,7 +223,10 @@ PROCEDURE Card64ToString (number: CARD64;
     VAR j, remainder: CARDINAL;  quotient: CARD64;
 
     BEGIN
-        IF (number.high = 0) AND (number.low < 10) THEN
+        IF fieldsize = 0 THEN
+            (* do nothing - can happen if caller allowed *)
+            (* too little space.                         *)
+        ELSIF (number.high = 0) AND (number.low < 10) THEN
             IF fieldsize > 1 THEN
                 FOR j := 0 TO fieldsize-2 DO
                     buffer[j] := " ";

@@ -6,7 +6,7 @@ DEFINITION MODULE Menus;
         (*                      select from them.                       *)
         (*                                                              *)
         (*  Programmer:         P. Moylan                               *)
-        (*  Last edited:        11 May 1997                             *)
+        (*  Last edited:        19 December 2012                        *)
         (*  Status:             OK                                      *)
         (*                                                              *)
         (****************************************************************)
@@ -51,7 +51,9 @@ FROM Windows IMPORT
 
 TYPE
     Menu;               (* is private *)
-    ItemText = ARRAY ColumnRange OF CHAR;
+    ShortColumnRange = [0..79];
+    (*ItemText = ARRAY ColumnRange OF CHAR;*)
+    ItemText = ARRAY ShortColumnRange OF CHAR;
     MenuColumn = CARDINAL;
 
     (* Note the dual use of the word "column".  A variable of type      *)
@@ -148,13 +150,15 @@ PROCEDURE PositionMenu (M: Menu;  startline, endline: RowRange;
     (* actually display the menu - that doesn't happen until            *)
     (* SelectFromMenu is called.                                        *)
 
-PROCEDURE MenuColours (M: Menu;  fore, back, hfore, hback, select: Colour);
+PROCEDURE MenuColours (M: Menu;  fore, back, hfore, hback,
+                                             select, columngap: Colour);
 
     (* Set the colours for the screen display of the menu.  The colours *)
     (* fore and back are used as the normal foreground and background   *)
     (* colours, and the highlighted menu item is displayed in colours   *)
     (* hfore, hback.  The "select" colour is for highlighting the       *)
-    (* selection character.  This procedure is optional.                *)
+    (* selection character, and columngap is for the gap between        *)
+    (* menu columns.  This procedure is optional.                       *)
 
 PROCEDURE SetOptions (M: Menu;  options: MO);
 

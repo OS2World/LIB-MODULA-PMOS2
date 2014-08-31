@@ -1,3 +1,25 @@
+(**************************************************************************)
+(*                                                                        *)
+(*  PMOS/2 software library                                               *)
+(*  Copyright (C) 2014   Peter Moylan                                     *)
+(*                                                                        *)
+(*  This program is free software: you can redistribute it and/or modify  *)
+(*  it under the terms of the GNU General Public License as published by  *)
+(*  the Free Software Foundation, either version 3 of the License, or     *)
+(*  (at your option) any later version.                                   *)
+(*                                                                        *)
+(*  This program is distributed in the hope that it will be useful,       *)
+(*  but WITHOUT ANY WARRANTY; without even the implied warranty of        *)
+(*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *)
+(*  GNU General Public License for more details.                          *)
+(*                                                                        *)
+(*  You should have received a copy of the GNU General Public License     *)
+(*  along with this program.  If not, see <http://www.gnu.org/licenses/>. *)
+(*                                                                        *)
+(*  To contact author:   http://www.pmoylan.org   peter@pmoylan.org       *)
+(*                                                                        *)
+(**************************************************************************)
+
 IMPLEMENTATION MODULE SplitScreen;
 
         (********************************************************)
@@ -5,7 +27,7 @@ IMPLEMENTATION MODULE SplitScreen;
         (*           Simple screen output routines.             *)
         (*                                                      *)
         (*  Programmer:         P. Moylan                       *)
-        (*  Last edited:        17 April 2004                   *)
+        (*  Last edited:        14 November 20012               *)
         (*  Status:             OK                              *)
         (*                                                      *)
         (*  This module supports a specialised form of split    *)
@@ -72,6 +94,10 @@ VAR
 
     Fill: ARRAY [0..1] OF CHAR;
 
+    (* Mutex for exclusive access to screen. *)
+
+    ScreenAccess: OS2.HMTX;
+
 (************************************************************************)
 (*                     CHECK FOR SCREEN AVAILABILITY                    *)
 (************************************************************************)
@@ -84,6 +110,28 @@ PROCEDURE NotDetached(): BOOLEAN;
     BEGIN
         RETURN ProcessIsNotDetached;
     END NotDetached;
+
+(************************************************************************)
+(*                      GETTING EXCLUSIVE ACCESS                        *)
+(************************************************************************)
+
+PROCEDURE LockScreen;
+
+    (* Get exclusive access to the screen. *)
+
+    BEGIN
+        OS2.DosRequestMutexSem (ScreenAccess, OS2.SEM_INDEFINITE_WAIT);
+    END LockScreen;
+
+(************************************************************************)
+
+PROCEDURE UnlockScreen;
+
+    (* End of section started by LockScreen. *)
+
+    BEGIN
+        OS2.DosReleaseMutexSem (ScreenAccess);
+    END UnlockScreen;
 
 (************************************************************************)
 (*                        SPLIT-SCREEN SUPPORT                          *)
@@ -326,5 +374,6 @@ BEGIN
     DetachCheck;
     SplitEnabled := ProcessIsNotDetached;
     Initialise;
+    OS2.DosCreateMutexSem (NIL, ScreenAccess, 0, FALSE);
 END SplitScreen.
 

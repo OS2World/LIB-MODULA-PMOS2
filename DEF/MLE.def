@@ -1,0 +1,41 @@
+DEFINITION MODULE MLE;
+
+        (********************************************************)
+        (*                                                      *)
+        (*                Simple multiline editor               *)
+        (*                                                      *)
+        (*  Programmer:         P. Moylan                       *)
+        (*  Last edited:        31 July 2005                    *)
+        (*  Status:             OK                              *)
+        (*                                                      *)
+        (********************************************************)
+
+
+FROM Windows IMPORT (*type*) Window;
+
+
+TYPE MLEstate;           (* is private *)
+
+PROCEDURE CreateMLEField (w: Window;  firstrow, firstcol: CARDINAL;
+                                          rows, cols: CARDINAL): MLEstate;
+
+    (* Creates the editing structure, within an already open window,    *)
+    (* to be used by the remaining procedures in this module.  There    *)
+    (* must be a spare line above and below the editing region to allow *)
+    (* the display of "more" when appropriate.                          *)
+
+PROCEDURE DiscardMLEField (VAR (*INOUT*) state: MLEstate);
+
+    (* Closes the editing structure. *)
+
+PROCEDURE DisplayText (state: MLEstate;  VAR (*IN*) text: ARRAY OF CHAR);
+
+    (* Refreshes the screen display. *)
+
+PROCEDURE EditText (MW: MLEstate;  VAR (*INOUT*) text: ARRAY OF CHAR;
+                                   MaxCharacters: CARDINAL);
+
+    (* Allows the user to edit the text. *)
+
+END MLE.
+

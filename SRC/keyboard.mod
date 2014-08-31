@@ -1,3 +1,25 @@
+(**************************************************************************)
+(*                                                                        *)
+(*  PMOS/2 software library                                               *)
+(*  Copyright (C) 2014   Peter Moylan                                     *)
+(*                                                                        *)
+(*  This program is free software: you can redistribute it and/or modify  *)
+(*  it under the terms of the GNU General Public License as published by  *)
+(*  the Free Software Foundation, either version 3 of the License, or     *)
+(*  (at your option) any later version.                                   *)
+(*                                                                        *)
+(*  This program is distributed in the hope that it will be useful,       *)
+(*  but WITHOUT ANY WARRANTY; without even the implied warranty of        *)
+(*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *)
+(*  GNU General Public License for more details.                          *)
+(*                                                                        *)
+(*  You should have received a copy of the GNU General Public License     *)
+(*  along with this program.  If not, see <http://www.gnu.org/licenses/>. *)
+(*                                                                        *)
+(*  To contact author:   http://www.pmoylan.org   peter@pmoylan.org       *)
+(*                                                                        *)
+(**************************************************************************)
+
 IMPLEMENTATION MODULE Keyboard;
 
         (****************************************************************)
@@ -5,7 +27,7 @@ IMPLEMENTATION MODULE Keyboard;
         (*                      Keyboard Input                          *)
         (*                                                              *)
         (*  Programmer:         P. Moylan                               *)
-        (*  Last edited:        26 July 2001                            *)
+        (*  Last edited:        22 December 2013                        *)
         (*  Status:             Working                                 *)
         (*                                                              *)
         (****************************************************************)
@@ -36,7 +58,7 @@ FROM Storage IMPORT
     (* proc *)  DEALLOCATE;
 
 FROM LowLevel IMPORT
-    (* proc *)  IAND, IOR, IANDB, IORB, ALLOCATE64;
+    (* proc *)  EVAL, IAND, IOR, IANDB, IORB, ALLOCATE64;
 
 FROM Semaphores IMPORT
     (* type *)  Semaphore,
@@ -339,7 +361,7 @@ BEGIN
     DetachCheck;
     IF ProcessIsNotDetached THEN
         (*SetLocks (0);*)
-        CreateTask (InputTask, 4, "Keyboard main");
+        EVAL(CreateTask (InputTask, 4, "Keyboard main"));
     END (*IF*);
 END Keyboard.
 

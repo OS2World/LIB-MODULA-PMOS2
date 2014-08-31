@@ -1,3 +1,25 @@
+(**************************************************************************)
+(*                                                                        *)
+(*  PMOS/2 software library                                               *)
+(*  Copyright (C) 2014   Peter Moylan                                     *)
+(*                                                                        *)
+(*  This program is free software: you can redistribute it and/or modify  *)
+(*  it under the terms of the GNU General Public License as published by  *)
+(*  the Free Software Foundation, either version 3 of the License, or     *)
+(*  (at your option) any later version.                                   *)
+(*                                                                        *)
+(*  This program is distributed in the hope that it will be useful,       *)
+(*  but WITHOUT ANY WARRANTY; without even the implied warranty of        *)
+(*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *)
+(*  GNU General Public License for more details.                          *)
+(*                                                                        *)
+(*  You should have received a copy of the GNU General Public License     *)
+(*  along with this program.  If not, see <http://www.gnu.org/licenses/>. *)
+(*                                                                        *)
+(*  To contact author:   http://www.pmoylan.org   peter@pmoylan.org       *)
+(*                                                                        *)
+(**************************************************************************)
+
 IMPLEMENTATION MODULE Semaphores;
 
         (********************************************************)
@@ -127,12 +149,18 @@ PROCEDURE Wait (s: Semaphore);
 
 (************************************************************************)
 
-PROCEDURE TimedWaitT (s: Semaphore;  TimeLimit: INTEGER;
-                        VAR (*OUT*) TimedOut: BOOLEAN);
+PROCEDURE TimedWaitInternal (s: Semaphore;  TimeLimit: INTEGER;
+                               ConsumeSurplus: BOOLEAN;
+                                 VAR (*OUT*) TimedOut: BOOLEAN);
 
     (* Like procedure Wait, except that it returns with TimedOut TRUE   *)
     (* if the corresponding Signal does not occur within TimeLimit      *)
-    (* clock ticks.                                                     *)
+    (* clock ticks.  Note that this procedure is not recommended for    *)
+    (* general use, because "clock ticks" is not a convenient unit of   *)
+    (* time for most callers.  For a more useful version, see procedure *)
+    (* TimedWait in module Timer.                                       *)
+    (* If ConsumeSurplus is true, we cancel all the semaphore "credit"  *)
+    (* that has been built up by possibly multiple Signal operations.   *)
 
     VAR p, previous, current: BlockedListPointer;  ThreadID: TaskID;
 
@@ -184,10 +212,13 @@ PROCEDURE TimedWaitT (s: Semaphore;  TimeLimit: INTEGER;
                 END (*IF*);
             ELSE                     (* value >= 0 *)
                 TimedOut := FALSE;
+                IF ConsumeSurplus THEN
+                    value := 0;
+                END (*IF*);
             END (*IF*);
             Release (access);
         END (*WITH*);
-    END TimedWaitT;
+    END TimedWaitInternal;
 
 (************************************************************************)
 

@@ -1,6 +1,8 @@
 STATUS OF THE PROJECTS IN THE "PMOS/2 tests" workplace
 ======================================================
 
+NOTE: this file has not been updated for years, so it is probably obsolete.
+
 NOTE: ALL of the graphics programs fail since XDS 2.30 was installed.
 Cause not yet known, but the failure is occurring in module "Graph".
 

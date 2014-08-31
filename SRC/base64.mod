@@ -1,3 +1,25 @@
+(**************************************************************************)
+(*                                                                        *)
+(*  PMOS/2 software library                                               *)
+(*  Copyright (C) 2014   Peter Moylan                                     *)
+(*                                                                        *)
+(*  This program is free software: you can redistribute it and/or modify  *)
+(*  it under the terms of the GNU General Public License as published by  *)
+(*  the Free Software Foundation, either version 3 of the License, or     *)
+(*  (at your option) any later version.                                   *)
+(*                                                                        *)
+(*  This program is distributed in the hope that it will be useful,       *)
+(*  but WITHOUT ANY WARRANTY; without even the implied warranty of        *)
+(*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *)
+(*  GNU General Public License for more details.                          *)
+(*                                                                        *)
+(*  You should have received a copy of the GNU General Public License     *)
+(*  along with this program.  If not, see <http://www.gnu.org/licenses/>. *)
+(*                                                                        *)
+(*  To contact author:   http://www.pmoylan.org   peter@pmoylan.org       *)
+(*                                                                        *)
+(**************************************************************************)
+
 IMPLEMENTATION MODULE Base64;
 
         (********************************************************)
@@ -6,7 +28,7 @@ IMPLEMENTATION MODULE Base64;
         (*                                                      *)
         (*  Programmer:         P. Moylan                       *)
         (*  Started:            31 January 2003                 *)
-        (*  Last edited:        1 February 2003                 *)
+        (*  Last edited:        15 April 2012                   *)
         (*  Status:             Working                         *)
         (*                                                      *)
         (********************************************************)
@@ -52,7 +74,7 @@ TYPE
 (*                                ENCODING                                      *)
 (********************************************************************************)
 
-PROCEDURE Encode (data: ARRAY OF LOC;  N: CARDINAL;
+PROCEDURE Encode (VAR (*IN*) data: ARRAY OF LOC;  N: CARDINAL;
                            VAR (*OUT*) result: ARRAY OF CHAR);
 
     (* Translates N bytes of data to Base64. *)
@@ -156,7 +178,8 @@ PROCEDURE DecodeChar (ch: CHAR): CARD8;
 
 (********************************************************************************)
 
-PROCEDURE Decode (data: ARRAY OF CHAR;  VAR (*OUT*) result: ARRAY OF LOC): CARDINAL;
+PROCEDURE Decode (VAR (*IN*) data: ARRAY OF CHAR;
+                      VAR (*OUT*) result: ARRAY OF LOC): CARDINAL;
 
     (* Translates Base64 to a string of bytes.  The function result is the      *)
     (* number of bytes in the decoded result.                                   *)

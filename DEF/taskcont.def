@@ -7,7 +7,7 @@ DEFINITION MODULE TaskControl;
         (*                  related procedures.                         *)
         (*                                                              *)
         (*      Programmer:     P. Moylan                               *)
-        (*      Last edited:    14 February 2001                        *)
+        (*      Last edited:    22 December 2013                        *)
         (*      Status:         OK                                      *)
         (*                                                              *)
         (****************************************************************)
@@ -29,7 +29,7 @@ TYPE
     PROC1 = PROCEDURE (ADDRESS);
 
 PROCEDURE CreateTask (StartAddress: PROC;  taskpriority: PriorityLevel;
-                                                taskname: NameString);
+                                           taskname: NameString): BOOLEAN;
 
     (* Must be called to introduce a task to the system. The first      *)
     (* parameter, which should be the name of a procedure containing    *)
@@ -44,14 +44,14 @@ PROCEDURE CreateTask (StartAddress: PROC;  taskpriority: PriorityLevel;
     (* is legal, but murder is not.                                     *)
 
 PROCEDURE CreateTask1 (StartAddress: PROC1;  taskpriority: PriorityLevel;
-                                   taskname: NameString;  param: ADDRESS);
+                          taskname: NameString;  param: ADDRESS): BOOLEAN;
 
     (* Like CreateTask, but allows the passing of a single parameter    *)
     (* "param" to the task.                                             *)
 
 (*
 PROCEDURE CreateTaskSpecial (StartAddress: PROC;  taskpriority: PriorityLevel;
-                                                taskname: NameString);
+                                           taskname: NameString): BOOLEAN;
 *)
     (* Like CreateTask, but starts the task with a direct API call      *)
     (* rather than going through module Processes.  (This is not a      *)
@@ -66,6 +66,10 @@ PROCEDURE TaskExit;
     (* There is normally no need for a task to call this procedure,     *)
     (* because it is automatically called when the task code "falls out *)
     (* the bottom" by executing its final procedure return.             *)
+
+PROCEDURE ThreadCount(): CARDINAL;
+
+    (* Returns the number of currently running threads. *)
 
 PROCEDURE Crash (message: ARRAY OF CHAR);
 

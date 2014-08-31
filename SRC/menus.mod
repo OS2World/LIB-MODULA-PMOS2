@@ -1,3 +1,25 @@
+(**************************************************************************)
+(*                                                                        *)
+(*  PMOS/2 software library                                               *)
+(*  Copyright (C) 2014   Peter Moylan                                     *)
+(*                                                                        *)
+(*  This program is free software: you can redistribute it and/or modify  *)
+(*  it under the terms of the GNU General Public License as published by  *)
+(*  the Free Software Foundation, either version 3 of the License, or     *)
+(*  (at your option) any later version.                                   *)
+(*                                                                        *)
+(*  This program is distributed in the hope that it will be useful,       *)
+(*  but WITHOUT ANY WARRANTY; without even the implied warranty of        *)
+(*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *)
+(*  GNU General Public License for more details.                          *)
+(*                                                                        *)
+(*  You should have received a copy of the GNU General Public License     *)
+(*  along with this program.  If not, see <http://www.gnu.org/licenses/>. *)
+(*                                                                        *)
+(*  To contact author:   http://www.pmoylan.org   peter@pmoylan.org       *)
+(*                                                                        *)
+(**************************************************************************)
+
 IMPLEMENTATION MODULE Menus;
 
         (****************************************************************)
@@ -6,7 +28,7 @@ IMPLEMENTATION MODULE Menus;
         (*                      select from them.                       *)
         (*                                                              *)
         (*  Programmer:         P. Moylan                               *)
-        (*  Last edited:        1 March 2000                            *)
+        (*  Last edited:        16 September 2009                       *)
         (*  Status:             OK                                      *)
         (*                                                              *)
         (****************************************************************)
@@ -134,6 +156,8 @@ TYPE
     (*  MouseControl    If TRUE, user can move the menu with the mouse. *)
     (*  CloseOnClickOutsideMenu  If TRUE, a mouse click outside the     *)
     (*                   menu will cause a return with a zero result.   *)
+    (*  MayModify       Always FALSE.  (It's a feature I started to     *)
+    (*                   implement before changing my mind.)            *)
     (*  offL, offR,     What to do when the user tries to run off the   *)
     (*    offT, offB    left/right/top/bottom edge of the menu.         *)
     (*  CurrentItemNo   The item number currently selected.             *)
@@ -190,7 +214,7 @@ TYPE
 
                 ShowTitle, ShowBorder, CloseAfterSelection,
                         PutBackExitKey, FastSelect, MouseControl,
-                        CloseOnClickOutsideMenu: BOOLEAN;
+                        CloseOnClickOutsideMenu, MayModify: BOOLEAN;
                 offL, offR, offT, offB: OffEdgeOption;
 
                 (* Information about the current state of the menu.     *)
@@ -232,7 +256,7 @@ PROCEDURE Setselpos (VAR (*INOUT*) item: ItemBuffer);
 
     (* Looks for a "\" in the item text, adjusts item.selpos if found.  *)
 
-    CONST high = MAX(ColumnRange);
+    CONST high = MAX(ShortColumnRange);
 
     VAR j, k: CARDINAL;
 
@@ -269,7 +293,7 @@ PROCEDURE resize (VAR (*INOUT*) text: ItemText;  size: CARDINAL);
             INC(j);
         END (*WHILE*);
         WHILE j < size DO text[j] := " "; INC(j) END (*WHILE*);
-        IF j <= MAX(ColumnRange) THEN text[j] := CHR(0) END (*IF*);
+        IF j <= MAX(ShortColumnRange) THEN text[j] := CHR(0) END (*IF*);
     END resize;
 
 (************************************************************************)
@@ -293,7 +317,7 @@ PROCEDURE CreateMenu (VAR (*OUT*) M: Menu; columns: MenuColumn;
             (* Store the header text, with space fill.  *)
 
             heading := Messages[0];
-            resize (heading, MAX(ColumnRange));
+            resize (heading, MAX(ShortColumnRange));
 
             (* Work out how many menu items there are.  *)
 
@@ -307,6 +331,7 @@ PROCEDURE CreateMenu (VAR (*OUT*) M: Menu; columns: MenuColumn;
 
             (* Store the item text.     *)
 
+            MayModify := FALSE;
             ALLOCATE (TextPtr, NoOfItems*SIZE(ItemBuffer));
             FOR j := 1 TO NoOfItems DO
                 WITH TextPtr^[j] DO
@@ -328,26 +353,28 @@ PROCEDURE CreateMenu (VAR (*OUT*) M: Menu; columns: MenuColumn;
 
         (* Give the menu a default initial position, size, and colour.  *)
 
-        PositionMenu (M, 0, 10, 0, MAX(ColumnRange));
-        MenuColours (M, blue, white, black, cyan, red);
+        PositionMenu (M, 0, 10, 0, MAX(ShortColumnRange));
+        MenuColours (M, blue, white, black, cyan, red, yellow);
 
     END CreateMenu;
 
 (************************************************************************)
 
-PROCEDURE MenuColours (M: Menu;  fore, back, hfore, hback, select: Colour);
+PROCEDURE MenuColours (M: Menu;  fore, back, hfore, hback,
+                                             select, columngap: Colour);
 
     (* Set the colours for the screen display of the menu.  The colours *)
     (* fore and back are used as the normal foreground and background   *)
     (* colours, and the highlighted menu item is displayed in colours   *)
     (* hfore, hback.  The "select" colour is for highlighting the       *)
-    (* selection character.                                             *)
+    (* selection character, and columngap is for the gap between        *)
+    (* menu columns.                                                    *)
 
     BEGIN
         WITH M^ DO
             foreground := fore;  background := back;
             highforeground := hfore;  highbackground := hback;
-            selchar := select;  highgap := red;
+            selchar := select;  highgap := columngap;
         END (*WITH*);
     END MenuColours;
 
@@ -1205,6 +1232,20 @@ PROCEDURE DisplayMenu (w: Window;  M: Menu;
     END DisplayMenu;
 
 (************************************************************************)
+
+PROCEDURE AcceptText (M: Menu);
+
+    (* Lets the user alter the text of the current menu item. *)
+
+    (* NOT IMPLEMENTED, but I've left the skeleton here in case I ever  *)
+    (* change my mind.                                                  *)
+
+    BEGIN
+        (*EditString (w: Window;  VAR (*INOUT*) result: ARRAY OF CHAR;
+                                  MaxResultChars, fieldsize: CARDINAL);*)
+    END AcceptText;
+
+(************************************************************************)
 (*                   MAKING A SELECTION FROM A MENU                     *)
 (************************************************************************)
 
@@ -1238,16 +1279,18 @@ PROCEDURE MakeTheSelection (M: Menu);
                 ELSIF option = CR THEN EXIT (*LOOP*)
                 ELSIF option = Esc THEN
                     CurrentItemNo := 0;  EXIT (*LOOP*)
-                ELSIF option IN CHARSET{"0".."9", "A".."Z", "a".."z"} THEN
-                    IF RepositionTo(M, CAP(option)) AND FastSelect THEN
-                        EXIT (*LOOP*);
-                    END (*IF*);
                 ELSIF option = CHR(0) THEN
                     HandleFunctionKey (M, option);
                     IF RanOffEdge THEN
                         IF PutBackExitKey THEN
                             PutBack (option);  option := CHR(0);
                         END (*IF*);
+                        EXIT (*LOOP*);
+                    END (*IF*);
+                ELSIF MayModify THEN
+                    AcceptText (M);
+                ELSIF option IN CHARSET{"0".."9", "A".."Z", "a".."z"} THEN
+                    IF RepositionTo(M, CAP(option)) AND FastSelect THEN
                         EXIT (*LOOP*);
                     END (*IF*);
                 END (*IF*);

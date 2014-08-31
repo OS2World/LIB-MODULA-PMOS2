@@ -1,3 +1,25 @@
+(**************************************************************************)
+(*                                                                        *)
+(*  PMOS/2 software library                                               *)
+(*  Copyright (C) 2014   Peter Moylan                                     *)
+(*                                                                        *)
+(*  This program is free software: you can redistribute it and/or modify  *)
+(*  it under the terms of the GNU General Public License as published by  *)
+(*  the Free Software Foundation, either version 3 of the License, or     *)
+(*  (at your option) any later version.                                   *)
+(*                                                                        *)
+(*  This program is distributed in the hope that it will be useful,       *)
+(*  but WITHOUT ANY WARRANTY; without even the implied warranty of        *)
+(*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *)
+(*  GNU General Public License for more details.                          *)
+(*                                                                        *)
+(*  You should have received a copy of the GNU General Public License     *)
+(*  along with this program.  If not, see <http://www.gnu.org/licenses/>. *)
+(*                                                                        *)
+(*  To contact author:   http://www.pmoylan.org   peter@pmoylan.org       *)
+(*                                                                        *)
+(**************************************************************************)
+
 IMPLEMENTATION MODULE LONGLONG;
 
         (********************************************************)
@@ -6,7 +28,7 @@ IMPLEMENTATION MODULE LONGLONG;
         (*                                                      *)
         (*  Programmer:         P. Moylan                       *)
         (*  Started:            17 October 2001                 *)
-        (*  Last edited:        19 May 2005                     *)
+        (*  Last edited:        1 June 2011                     *)
         (*  Status:             Working                         *)
         (*                                                      *)
         (********************************************************)
@@ -154,7 +176,7 @@ PROCEDURE Mul64 (A, B: CARD64): CARD64;
 
     (* Returns A*B. *)
 
-    CONST scale = 32768;
+    CONST scale = 65536;
 
     (********************************************************************)
 
@@ -223,6 +245,24 @@ PROCEDURE Mul64 (A, B: CARD64): CARD64;
         RETURN result;
 
     END Mul64;
+
+(************************************************************************)
+
+PROCEDURE ShortMul64 (A: CARD64;  B: CARDINAL): CARD64;
+
+    (* Returns A*B, for the case where the second operand is a CARDINAL. *)
+
+    VAR BB: CARD64;
+
+    BEGIN
+        (* It's probably good enough to do this without *)
+        (* trying to optimise.                          *)
+
+        BB.low := B;
+        BB.high := 0;
+        RETURN Mul64 (A, BB);
+
+    END ShortMul64;
 
 (************************************************************************)
 

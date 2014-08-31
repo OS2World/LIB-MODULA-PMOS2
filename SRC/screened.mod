@@ -1,3 +1,25 @@
+(**************************************************************************)
+(*                                                                        *)
+(*  PMOS/2 software library                                               *)
+(*  Copyright (C) 2014   Peter Moylan                                     *)
+(*                                                                        *)
+(*  This program is free software: you can redistribute it and/or modify  *)
+(*  it under the terms of the GNU General Public License as published by  *)
+(*  the Free Software Foundation, either version 3 of the License, or     *)
+(*  (at your option) any later version.                                   *)
+(*                                                                        *)
+(*  This program is distributed in the hope that it will be useful,       *)
+(*  but WITHOUT ANY WARRANTY; without even the implied warranty of        *)
+(*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *)
+(*  GNU General Public License for more details.                          *)
+(*                                                                        *)
+(*  You should have received a copy of the GNU General Public License     *)
+(*  along with this program.  If not, see <http://www.gnu.org/licenses/>. *)
+(*                                                                        *)
+(*  To contact author:   http://www.pmoylan.org   peter@pmoylan.org       *)
+(*                                                                        *)
+(**************************************************************************)
+
 IMPLEMENTATION MODULE ScreenEditor;
 
         (********************************************************)
@@ -5,7 +27,7 @@ IMPLEMENTATION MODULE ScreenEditor;
         (*              Screen data capture                     *)
         (*                                                      *)
         (*  Programmer:         P. Moylan                       *)
-        (*  Last edited:        15 May 1998                     *)
+        (*  Last edited:        9 July 2005                     *)
         (*  Status:                                             *)
         (*      Basic features working, but see faults in       *)
         (*      module RowEditor.                               *)
@@ -428,9 +450,19 @@ PROCEDURE ScreenEdit (w: Window;  S: Structure;  VAR (*OUT*) abort: BOOLEAN);
             nextchar := InKey();
             IF nextchar = CHR(0) THEN
                 nextchar := InKey();
-                IF (nextchar = "H") AND (S^.up <> NIL) THEN
+
+                (* Remark: in the following we interpret "cursor left"  *)
+                (* to mean the same as "cursor up", and "cursor right"  *)
+                (* to mean the same as "cursor down".  The reasoning    *)
+                (* here is that we have just returned from the row      *)
+                (* editor, which will only return those keys if there   *)
+                (* is nothing to the left or right, respectively.       *)
+
+                IF ((nextchar = "H") OR (nextchar = "K"))
+                                     AND (S^.up <> NIL) THEN
                     S := S^.up;
-                ELSIF (nextchar = "P") AND (S^.down <> NIL) THEN
+                ELSIF ((nextchar = "P") OR (nextchar = "M"))
+                                        AND (S^.down <> NIL) THEN
                     S := S^.down;
                 ELSE
                     PutBack (nextchar);  PutBack (CHR(0));
@@ -448,6 +480,9 @@ PROCEDURE ScreenEdit (w: Window;  S: Structure;  VAR (*OUT*) abort: BOOLEAN);
                 EXIT (*LOOP*);
             ELSE
                 PutBack (nextchar);
+                IF S^.down <> NIL THEN
+                    S := S^.down;
+                END (*IF*);
             END (*IF*);
 
         END (*LOOP*);

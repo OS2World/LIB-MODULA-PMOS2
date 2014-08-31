@@ -12,7 +12,7 @@ DEFINITION MODULE MD5;
         (*                                                      *)
         (*  Programmer:         P. Moylan                       *)
         (*  Started:            14 September 1998               *)
-        (*  Last edited:        07 August 2002                  *)
+        (*  Last edited:        15 April 2012                   *)
         (*  Status:             Working                         *)
         (*                                                      *)
         (*  This module is derived from the RSA Data Security,  *)
@@ -31,7 +31,7 @@ PROCEDURE MD5Init(): MD5_CTX;
 
     (* MD5 initialization. Begins an MD5 operation, creating a new context. *)
 
-PROCEDURE MD5Update (context: MD5_CTX;  data: ARRAY OF LOC;  length: CARDINAL);
+PROCEDURE MD5Update (context: MD5_CTX;  VAR (*IN*) data: ARRAY OF LOC;  length: CARDINAL);
 
     (* MD5 block update operation. Continues an MD5 message-digest operation,   *)
     (* adding more data to what has already been processed for this context.    *)

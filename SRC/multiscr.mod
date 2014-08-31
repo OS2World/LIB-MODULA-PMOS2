@@ -1,3 +1,25 @@
+(**************************************************************************)
+(*                                                                        *)
+(*  PMOS/2 software library                                               *)
+(*  Copyright (C) 2014   Peter Moylan                                     *)
+(*                                                                        *)
+(*  This program is free software: you can redistribute it and/or modify  *)
+(*  it under the terms of the GNU General Public License as published by  *)
+(*  the Free Software Foundation, either version 3 of the License, or     *)
+(*  (at your option) any later version.                                   *)
+(*                                                                        *)
+(*  This program is distributed in the hope that it will be useful,       *)
+(*  but WITHOUT ANY WARRANTY; without even the implied warranty of        *)
+(*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *)
+(*  GNU General Public License for more details.                          *)
+(*                                                                        *)
+(*  You should have received a copy of the GNU General Public License     *)
+(*  along with this program.  If not, see <http://www.gnu.org/licenses/>. *)
+(*                                                                        *)
+(*  To contact author:   http://www.pmoylan.org   peter@pmoylan.org       *)
+(*                                                                        *)
+(**************************************************************************)
+
 IMPLEMENTATION MODULE MultiScreen;
 
         (****************************************************************)
@@ -22,7 +44,7 @@ IMPLEMENTATION MODULE MultiScreen;
         (*  EnableHotKeys to define the three hot keys.                 *)
         (*                                                              *)
         (*  Programmer:         P. Moylan                               *)
-        (*  Last edited:        4 September 1998                        *)
+        (*  Last edited:        22 December 2013                        *)
         (*  Status:             Mostly working                          *)
         (*      Still don't properly support duplicating the same       *)
         (*      window on multiple virtual screens.  At this stage      *)
@@ -46,6 +68,9 @@ FROM Keyboard IMPORT
 FROM Windows IMPORT
     (* type *)  Window, DisplayPage,
     (* proc *)  Hide, PutOnTop, PutOnPage, SetActivePage, InstallCloseHandler;
+
+FROM LowLevel IMPORT
+    (* proc *)  EVAL;
 
 (************************************************************************)
 
@@ -424,11 +449,11 @@ PROCEDURE EnableHotKeys (flag1: BOOLEAN;  key1: CHAR;
 
     BEGIN
         HotKey (flag1, key1, wakeup1);
-        CreateTask (HotKeyHandler1, 9, "Group prev");
+        EVAL(CreateTask (HotKeyHandler1, 9, "Group prev"));
         HotKey (flag2, key2, wakeup2);
-        CreateTask (HotKeyHandler2, 9, "Group next");
+        EVAL(CreateTask (HotKeyHandler2, 9, "Group next"));
         HotKey (flag3, key3, wakeup3);
-        CreateTask (HotKeyHandler3, 9, "Cycle hot key");
+        EVAL(CreateTask (HotKeyHandler3, 9, "Cycle hot key"));
     END EnableHotKeys;
 
 (************************************************************************)

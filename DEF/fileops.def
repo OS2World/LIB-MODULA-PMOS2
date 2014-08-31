@@ -10,7 +10,7 @@ DEFINITION MODULE FileOps;
         (*                                                      *)
         (*  Programmer:         P. Moylan                       *)
         (*  Started:            17 October 2001                 *)
-        (*  Last edited:        26 November 2003                *)
+        (*  Last edited:        19 October 2013                 *)
         (*  Status:             OK                              *)
         (*                                                      *)
         (*    The original version of this module used          *)
@@ -75,19 +75,32 @@ PROCEDURE FreeSpace (drive: CHAR): CARDINAL;
     (* Returns the amount of free space on the given drive.  The        *)
     (* result is in kilobytes.                                          *)
 
+PROCEDURE GetCurrentDirectory (VAR (*OUT*) CurrentDir: ARRAY OF CHAR);
+
+    (* Returns the name of the current directory on the current volume. *)
+
+PROCEDURE GetEXEDirectory (VAR (*OUT*) Dir: ARRAY OF CHAR);
+
+    (* Returns the name of the directory holding this executable. *)
+
 (************************************************************************)
 (*                           OPEN/CLOSE/ETC                             *)
 (************************************************************************)
 
-PROCEDURE OpenOldFile (name: ARRAY OF CHAR;  WillWrite: BOOLEAN): ChanId;
+PROCEDURE OpenOldFile (name: ARRAY OF CHAR;  WillWrite: BOOLEAN;
+                                             binary: BOOLEAN): ChanId;
 
     (* Opens an existing file and returns its channel ID.  If the       *)
     (* second parameter is TRUE we are requesting write as well as read *)
     (* access; if it's FALSE, we want read-only access.                 *)
+    (* The 'binary' parameter is ignored in the OS/2 version, but is    *)
+    (* needed in the Windows version.                                   *)
 
-PROCEDURE OpenNewFile (name: ARRAY OF CHAR): ChanId;
+PROCEDURE OpenNewFile (name: ARRAY OF CHAR;  binary: BOOLEAN): ChanId;
 
-    (* Opens a new file and returns its channel ID. *)
+    (* Opens a new file and returns its channel ID.                     *)
+    (* The 'binary' parameter is ignored in the OS/2 version, but is    *)
+    (* needed in the Windows version.                                   *)
 
 PROCEDURE OpenNewFile1 (name: ARRAY OF CHAR;
                          VAR (*OUT*) duplicate: BOOLEAN): ChanId;
@@ -110,9 +123,21 @@ PROCEDURE CloseFile (cid: ChanId);
 
     (* Closes a file. *)
 
+PROCEDURE Flush (cid: ChanId);
+
+    (* Sends all pending output to the file. *)
+
+(*PROCEDURE NameOf (f: ChanId);*)
+
+    (* Returns the name of the file. *)
+
 PROCEDURE HideFile (name: ARRAY OF CHAR;  HideIt: BOOLEAN);
 
     (* Hides or unhides a file, depending on the second parameter. *)
+
+PROCEDURE Exists (name: ARRAY OF CHAR): BOOLEAN;
+
+    (* Returns TRUE iff 'name' already exists. *)
 
 PROCEDURE DeleteFile (name: ARRAY OF CHAR);
 
@@ -252,6 +277,15 @@ PROCEDURE NextDirEntry (VAR (*INOUT*) D: DirectoryEntry): BOOLEAN;
 PROCEDURE DirSearchDone (VAR (*INOUT*) D: DirectoryEntry);
 
     (* Close the directory that D represents. *)
+
+(************************************************************************)
+(*                           MISCELLANEOUS                              *)
+(************************************************************************)
+
+PROCEDURE GetProgName (VAR (*OUT*) name: ARRAY OF CHAR);
+
+    (* Returns the name of this executable, with path and extension     *)
+    (* removed.                                                         *)
 
 (************************************************************************)
 

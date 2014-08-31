@@ -1,3 +1,25 @@
+(**************************************************************************)
+(*                                                                        *)
+(*  PMOS/2 software library                                               *)
+(*  Copyright (C) 2014   Peter Moylan                                     *)
+(*                                                                        *)
+(*  This program is free software: you can redistribute it and/or modify  *)
+(*  it under the terms of the GNU General Public License as published by  *)
+(*  the Free Software Foundation, either version 3 of the License, or     *)
+(*  (at your option) any later version.                                   *)
+(*                                                                        *)
+(*  This program is distributed in the hope that it will be useful,       *)
+(*  but WITHOUT ANY WARRANTY; without even the implied warranty of        *)
+(*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *)
+(*  GNU General Public License for more details.                          *)
+(*                                                                        *)
+(*  You should have received a copy of the GNU General Public License     *)
+(*  along with this program.  If not, see <http://www.gnu.org/licenses/>. *)
+(*                                                                        *)
+(*  To contact author:   http://www.pmoylan.org   peter@pmoylan.org       *)
+(*                                                                        *)
+(**************************************************************************)
+
 <* WOFF316+ *>
 
 IMPLEMENTATION MODULE MD5;
@@ -11,8 +33,12 @@ IMPLEMENTATION MODULE MD5;
         (*                                                      *)
         (*  Programmer:         P. Moylan                       *)
         (*  Started:            14 September 1998               *)
-        (*  Last edited:        18 February 2005                *)
+        (*  Last edited:        14 April 2012                   *)
         (*  Status:             Working                         *)
+        (*                                                      *)
+        (*    Last change: in digest-to-string conversion,      *)
+        (*    now use 'a'..'f' instead of 'A'..'F' as hex       *)
+        (*    digits.                                           *)
         (*                                                      *)
         (********************************************************)
 
@@ -302,7 +328,7 @@ PROCEDURE MD5Init(): MD5_CTX;
 
 (********************************************************************************)
 
-PROCEDURE MD5Update (context: MD5_CTX;  data: ARRAY OF LOC;  length: CARDINAL);
+PROCEDURE MD5Update (context: MD5_CTX;  VAR (*IN*) data: ARRAY OF LOC;  length: CARDINAL);
 
     (* MD5 block update operation. Continues an MD5 message-digest operation,   *)
     (* adding more data to what has already been processed for this context.    *)
@@ -414,7 +440,7 @@ PROCEDURE ConvertHex1 (value: CARD8;  VAR (*INOUT*) string: ARRAY OF CHAR;
         IF value < 10 THEN
             ch := CHR(ORD('0') + value);
         ELSE
-            ch := CHR(ORD('A') + value - 10);
+            ch := CHR(ORD('a') + value - 10);
         END (*IF*);
         IF pos <= HIGH(string) THEN
             string[pos] := ch;  INC(pos);

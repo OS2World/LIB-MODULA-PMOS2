@@ -1,0 +1,23 @@
+DEFINITION MODULE RegExp;
+
+        (********************************************************)
+        (*                                                      *)
+        (*       String matching with regular expression        *)
+        (*                                                      *)
+        (*  Programmer:         P. Moylan                       *)
+        (*  Started:            7 August 2014                   *)
+        (*  Last edited:        13 August 2014                  *)
+        (*  Status:             OK                              *)
+        (*                                                      *)
+        (********************************************************)
+
+
+PROCEDURE EREMatch (VAR (*IN*) input, template: ARRAY OF CHAR): BOOLEAN;
+
+    (* Returns TRUE iff input matches the regular expression in         *)
+    (* template, according to the regular expression rules of POSIX     *)
+    (* Extended Regular Syntax.  These rules are further explained in   *)
+    (* the comments in RegExp.mod.                                      *)
+
+END RegExp.
+
